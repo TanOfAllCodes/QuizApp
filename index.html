@@ -5,11 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pawly's Coolest Quiz</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="mobstyle.css">
 </head>
 <body>
     <div id="language-modal" class="modal">
-        <div class="modal-content">
-            <h2>Choose Your Language</h2>
+        <div id="modal-content" class="modal-content">
+            <h2 id="modal-title">Choose Your Language</h2>
             <button id="lang-en" class="lang-btn">
                 <img src="https://flagcdn.com/w80/us.png" alt="US Flag"> English
             </button>
@@ -19,7 +20,7 @@
         </div>
     </div>
     <div id="landing" class="landing hidden">
-        <h1>
+        <h1 id="landing-title">
             Pawly's<br>
             Coolest<br>
             Quiz
@@ -27,7 +28,7 @@
         <button id="start-btn">Take Quiz</button>
     </div>
     <div id="quiz-container" class="container hidden">
-        <div class="language-switch">
+        <div id="language-switch" class="language-switch">
             <button id="switch-en" class="lang-btn">
                 <img src="https://flagcdn.com/w40/us.png" alt="US Flag"> EN
             </button>
@@ -35,15 +36,15 @@
                 <img src="https://flagcdn.com/w40/de.png" alt="German Flag"> DE
             </button>
         </div>
-        <h1>Quiz Time!</h1>
+        <h1 id="quiz-title">Quiz Time!</h1>
         <div id="score">Score: 0/10</div>
         <div id="question-number">Question 1 of 10</div>
         <div id="question-nav"></div>
         <div id="question"></div>
         <div id="options"></div>
         <button id="confirm-btn" disabled>Confirm Answer</button>
-        <div id="explanation" class="hidden"></div>
-        <div class="navigation">
+        <div id="explanation"></div>
+        <div id="navigation" class="navigation">
             <button id="prev-btn">Previous</button>
             <button id="next-btn">Next</button>
         </div>
@@ -53,12 +54,8 @@
     <audio id="correct-sound" src="right.mp3"></audio>
     <audio id="wrong-sound" src="wrong.mp3"></audio>
     <audio id="background-music" src="music.mp3" loop></audio>
-
-    <footer>Powered by S3-TI (R) 2025</footer>
-    
+    <footer id="footer">Powered by S3 - TI © 2025</footer>
     <script src="qa_config.js"></script>
     <script src="script.js"></script>
-    
 </body>
-
 </html>

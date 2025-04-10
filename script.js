@@ -1,7 +1,7 @@
 let currentQuestion = 0;
 let score = 0;
 let quizState = [];
-let currentLanguage = null; // No default until chosen
+let currentLanguage = null;
 let musicStarted = false;
 
 const translations = {
@@ -40,13 +40,16 @@ const translations = {
 };
 
 const modalEl = document.getElementById("language-modal");
+const modalTitleEl = document.getElementById("modal-title");
 const landingEl = document.getElementById("landing");
+const landingTitleEl = document.getElementById("landing-title");
 const quizContainerEl = document.getElementById("quiz-container");
 const startBtn = document.getElementById("start-btn");
 const langEnBtn = document.getElementById("lang-en");
 const langDeBtn = document.getElementById("lang-de");
 const switchEnBtn = document.getElementById("switch-en");
 const switchDeBtn = document.getElementById("switch-de");
+const quizTitleEl = document.getElementById("quiz-title");
 const questionEl = document.getElementById("question");
 const optionsEl = document.getElementById("options");
 const confirmBtn = document.getElementById("confirm-btn");
@@ -72,10 +75,10 @@ function shuffle(array) {
 
 function updateLanguage() {
     const t = translations[currentLanguage];
-    document.querySelector(".modal-content h2").textContent = t.chooseLanguage;
-    document.querySelector(".landing h1").innerHTML = t.title.join("<br>");
+    modalTitleEl.textContent = t.chooseLanguage;
+    landingTitleEl.innerHTML = t.title.join("<br>");
     startBtn.textContent = t.takeQuiz;
-    document.querySelector(".container h1").textContent = t.quizTime;
+    quizTitleEl.textContent = t.quizTime;
     confirmBtn.textContent = t.confirmAnswer;
     prevBtn.textContent = t.previous;
     nextBtn.textContent = t.next;
@@ -87,7 +90,12 @@ function updateLanguage() {
 }
 
 function initializeQuiz() {
-    quizState = quizData.map(() => ({ answered: false, selected: null, correct: false }));
+    quizState = quizData.map((q) => ({
+        answered: false,
+        selected: null,
+        correct: false,
+        shuffledOptions: shuffle([...q.options]) // Shuffle options once at quiz start
+    }));
     score = 0;
     currentQuestion = 0;
     loadQuestion();
@@ -96,34 +104,35 @@ function initializeQuiz() {
 
 function loadQuestion() {
     const q = quizData[currentQuestion];
+    const state = quizState[currentQuestion];
     questionEl.textContent = q.question[currentLanguage];
     optionsEl.innerHTML = "";
-    explanationEl.classList.add("hidden");
-    confirmBtn.disabled = !quizState[currentQuestion].selected || quizState[currentQuestion].answered;
+    explanationEl.classList.add("explanation-hidden"); // Use new class for hiding
 
-    const shuffledOptions = shuffle([...q.options]);
-    shuffledOptions.forEach(option => {
+    const options = state.shuffledOptions;
+    options.forEach(option => {
         const div = document.createElement("div");
         div.classList.add("option");
         div.textContent = option;
-        if (quizState[currentQuestion].answered) {
+        if (state.answered) {
             const correctAnswer = atob(q.answer);
             if (option === correctAnswer) div.classList.add("correct");
-            if (option === quizState[currentQuestion].selected && option !== correctAnswer) div.classList.add("wrong");
-        } else if (option === quizState[currentQuestion].selected) {
+            if (option === state.selected && option !== correctAnswer) div.classList.add("wrong");
+        } else if (option === state.selected) {
             div.classList.add("selected");
         }
         div.onclick = () => selectOption(div, option);
         optionsEl.appendChild(div);
     });
 
-    if (quizState[currentQuestion].answered) {
+    if (state.answered) {
         explanationEl.textContent = q.explanation[currentLanguage];
-        explanationEl.classList.remove("hidden");
+        explanationEl.classList.remove("explanation-hidden"); // Show explanation
     }
 
     updateQuizUI();
 }
+
 
 function updateQuizUI() {
     const t = translations[currentLanguage];
@@ -148,7 +157,7 @@ confirmBtn.onclick = () => {
     const q = quizData[currentQuestion];
     const correctAnswer = atob(q.answer);
     explanationEl.textContent = q.explanation[currentLanguage];
-    explanationEl.classList.remove("hidden");
+    explanationEl.classList.remove("explanation-hidden"); // Show explanation
 
     if (quizState[currentQuestion].selected === correctAnswer) {
         score++;
@@ -228,7 +237,9 @@ finishBtn.onclick = () => {
 startBtn.onclick = () => {
     landingEl.classList.add("hidden");
     quizContainerEl.classList.remove("hidden");
+    document.getElementById("language-switch").classList.remove("hidden");
     initializeQuiz();
+    startMusic();
 };
 
 function startMusic() {
@@ -266,14 +277,8 @@ switchDeBtn.onclick = () => {
     loadQuestion();
 };
 
-// Start music on any click outside modal buttons
-document.body.addEventListener("click", (e) => {
-    if (!modalEl.contains(e.target) && !musicStarted) {
-        startMusic();
-    }
-});
-
-// Start with modal visible
+// Start with modal visible, others hidden
 modalEl.classList.remove("hidden");
 landingEl.classList.add("hidden");
 quizContainerEl.classList.add("hidden");
+document.getElementById("language-switch").classList.add("hidden");
