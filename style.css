@@ -1,77 +1,156 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Comic Sans MS', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    background: url('https://images.jdmagicbox.com/rep/b2b/kids-wall-paper/kids-wall-paper-3.jpg') no-repeat center center fixed;
+    background-size: cover;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    margin: 0;
-    background-color: #f0f0f0;
 }
 
-.container {
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 500px;
+.landing {
     text-align: center;
 }
 
-h1 {
-    margin-bottom: 20px;
+.landing h1 {
+    color: #ff6680;
+    font-size: 60px; /* Even bigger for landing */
+    line-height: 1.2;
+    margin-bottom: 40px;
+}
+
+#start-btn {
+    padding: 20px 40px;
+    font-size: 28px;
+    background: #ffccd5;
+    border: none;
+    border-radius: 15px;
     color: #333;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+#start-btn:hover {
+    background: #ffb3c1;
+}
+
+.container {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    width: 700px;
+    min-height: 600px;
+    text-align: center;
+    overflow: hidden;
+}
+
+h1 {
+    margin-bottom: 25px;
+    color: #ff6680;
+    font-size: 40px;
 }
 
 #score, #question-number {
-    font-size: 18px;
-    margin: 10px 0;
+    font-size: 24px;
+    margin: 15px 0;
+    color: #333;
 }
 
 #question {
-    font-size: 20px;
-    margin: 20px 0;
+    font-size: 28px;
+    margin: 25px 0;
+    color: #333;
+}
+
+#question-nav {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin: 15px 0;
+}
+
+.nav-box {
+    width: 25px;
+    height: 25px;
+    border: 2px solid #ccc;
+    cursor: pointer;
+    background-color: white;
+}
+
+.nav-box.answered-correct {
+    background-color: #d4edda;
+    border-color: #28a745;
+}
+
+.nav-box.answered-wrong {
+    background-color: #f8d7da;
+    border-color: #dc3545;
 }
 
 .option {
-    background: #e0e0e0;
-    padding: 10px;
-    margin: 10px 0;
-    border-radius: 5px;
+    background: #ffe6ea;
+    padding: 15px;
+    margin: 15px 0;
+    border-radius: 10px;
     cursor: pointer;
-    transition: background 0.3s;
+    transition: all 0.3s;
+    font-size: 24px;
+    color: #333;
 }
 
 .option:hover {
-    background: #d0d0d0;
+    background: #ffd1d8;
 }
 
 .option.selected {
-    background: #a0a0a0;
+    background: #ffccd5;
+}
+
+.option.correct {
+    background: #d4edda;
+    border: 3px solid #28a745;
+    color: #155724;
+}
+
+.option.wrong {
+    background: #f8d7da;
+    border: 3px solid #dc3545;
+    color: #721c24;
 }
 
 button {
-    padding: 10px 20px;
-    margin: 10px;
+    padding: 15px 30px;
+    margin: 15px;
     border: none;
-    border-radius: 5px;
-    background: #007bff;
-    color: white;
+    border-radius: 10px;
+    background: #ffccd5;
+    color: #333;
     cursor: pointer;
     transition: background 0.3s;
+    font-size: 22px;
 }
 
 button:disabled {
-    background: #ccc;
+    background: #e0e0e0;
     cursor: not-allowed;
 }
 
 button:hover:not(:disabled) {
-    background: #0056b3;
+    background: #ffb3c1;
+}
+
+#finish-btn.highlighted {
+    background: #ffff99;
+    color: #333;
 }
 
 #explanation {
     margin-top: 20px;
     color: #555;
+    font-size: 20px;
 }
 
 .hidden {
