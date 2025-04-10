@@ -1,10 +1,12 @@
 let currentQuestion = 0;
 let score = 0;
 let quizState = [];
-let currentLanguage = "en"; // Default to English
+let currentLanguage = null; // No default until chosen
+let musicStarted = false;
 
 const translations = {
     en: {
+        chooseLanguage: "Choose Your Language",
         title: ["Pawly's", "Coolest", "Quiz"],
         takeQuiz: "Take Quiz",
         quizTime: "Quiz Time!",
@@ -20,6 +22,7 @@ const translations = {
         finishMessage: "Quiz finished! Your score: {{score}}/{{total}}"
     },
     de: {
+        chooseLanguage: "Wähle deine Sprache",
         title: ["Pawlys", "Coolstes", "Quiz"],
         takeQuiz: "Quiz starten",
         quizTime: "Quiz-Zeit!",
@@ -36,11 +39,14 @@ const translations = {
     }
 };
 
+const modalEl = document.getElementById("language-modal");
 const landingEl = document.getElementById("landing");
 const quizContainerEl = document.getElementById("quiz-container");
 const startBtn = document.getElementById("start-btn");
 const langEnBtn = document.getElementById("lang-en");
 const langDeBtn = document.getElementById("lang-de");
+const switchEnBtn = document.getElementById("switch-en");
+const switchDeBtn = document.getElementById("switch-de");
 const questionEl = document.getElementById("question");
 const optionsEl = document.getElementById("options");
 const confirmBtn = document.getElementById("confirm-btn");
@@ -66,6 +72,7 @@ function shuffle(array) {
 
 function updateLanguage() {
     const t = translations[currentLanguage];
+    document.querySelector(".modal-content h2").textContent = t.chooseLanguage;
     document.querySelector(".landing h1").innerHTML = t.title.join("<br>");
     startBtn.textContent = t.takeQuiz;
     document.querySelector(".container h1").textContent = t.quizTime;
@@ -74,8 +81,8 @@ function updateLanguage() {
     nextBtn.textContent = t.next;
     restartBtn.textContent = t.restartQuiz;
     finishBtn.textContent = t.finishQuiz;
-    langEnBtn.classList.toggle("active", currentLanguage === "en");
-    langDeBtn.classList.toggle("active", currentLanguage === "de");
+    switchEnBtn.classList.toggle("active", currentLanguage === "en");
+    switchDeBtn.classList.toggle("active", currentLanguage === "de");
     updateQuizUI();
 }
 
@@ -89,7 +96,7 @@ function initializeQuiz() {
 
 function loadQuestion() {
     const q = quizData[currentQuestion];
-    questionEl.textContent = q.question[currentLanguage]; // Use current language for question
+    questionEl.textContent = q.question[currentLanguage];
     optionsEl.innerHTML = "";
     explanationEl.classList.add("hidden");
     confirmBtn.disabled = !quizState[currentQuestion].selected || quizState[currentQuestion].answered;
@@ -111,7 +118,7 @@ function loadQuestion() {
     });
 
     if (quizState[currentQuestion].answered) {
-        explanationEl.textContent = q.explanation[currentLanguage]; // Use current language for explanation
+        explanationEl.textContent = q.explanation[currentLanguage];
         explanationEl.classList.remove("hidden");
     }
 
@@ -140,7 +147,7 @@ confirmBtn.onclick = () => {
     quizState[currentQuestion].answered = true;
     const q = quizData[currentQuestion];
     const correctAnswer = atob(q.answer);
-    explanationEl.textContent = q.explanation[currentLanguage]; // Update explanation on confirm
+    explanationEl.textContent = q.explanation[currentLanguage];
     explanationEl.classList.remove("hidden");
 
     if (quizState[currentQuestion].selected === correctAnswer) {
@@ -222,22 +229,51 @@ startBtn.onclick = () => {
     landingEl.classList.add("hidden");
     quizContainerEl.classList.remove("hidden");
     initializeQuiz();
-    backgroundMusic.play();
 };
+
+function startMusic() {
+    if (!musicStarted) {
+        backgroundMusic.play();
+        musicStarted = true;
+    }
+}
 
 langEnBtn.onclick = () => {
     currentLanguage = "en";
     updateLanguage();
-    if (!quizContainerEl.classList.contains("hidden")) loadQuestion(); // Refresh quiz if active
+    modalEl.classList.add("hidden");
+    landingEl.classList.remove("hidden");
+    startMusic();
 };
 
 langDeBtn.onclick = () => {
     currentLanguage = "de";
     updateLanguage();
-    if (!quizContainerEl.classList.contains("hidden")) loadQuestion(); // Refresh quiz if active
+    modalEl.classList.add("hidden");
+    landingEl.classList.remove("hidden");
+    startMusic();
 };
 
-// Initialize with default language
-updateLanguage();
-landingEl.classList.remove("hidden");
+switchEnBtn.onclick = () => {
+    currentLanguage = "en";
+    updateLanguage();
+    loadQuestion();
+};
+
+switchDeBtn.onclick = () => {
+    currentLanguage = "de";
+    updateLanguage();
+    loadQuestion();
+};
+
+// Start music on any click outside modal buttons
+document.body.addEventListener("click", (e) => {
+    if (!modalEl.contains(e.target) && !musicStarted) {
+        startMusic();
+    }
+});
+
+// Start with modal visible
+modalEl.classList.remove("hidden");
+landingEl.classList.add("hidden");
 quizContainerEl.classList.add("hidden");
