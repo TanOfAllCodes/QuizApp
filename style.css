@@ -14,9 +14,34 @@ body {
     text-align: center;
 }
 
+.language-selector {
+    margin-bottom: 20px;
+}
+
+.lang-btn {
+    padding: 10px 20px;
+    margin: 0 10px;
+    font-size: 20px;
+    background: #ffccd5;
+    border: none;
+    border-radius: 10px;
+    color: #333;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.lang-btn:hover {
+    background: #ffb3c1;
+}
+
+.lang-btn.active {
+    background: #ff6680;
+    color: white;
+}
+
 .landing h1 {
     color: #ff6680;
-    font-size: 60px; /* Even bigger for landing */
+    font-size: 60px;
     line-height: 1.2;
     margin-bottom: 40px;
 }

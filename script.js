@@ -1,10 +1,46 @@
 let currentQuestion = 0;
 let score = 0;
 let quizState = [];
+let currentLanguage = "en"; // Default to English
+
+const translations = {
+    en: {
+        title: ["Pawly's", "Coolest", "Quiz"],
+        takeQuiz: "Take Quiz",
+        quizTime: "Quiz Time!",
+        score: "Score: {{score}}/{{total}}",
+        questionNumber: "Question {{current}} of {{total}}",
+        confirmAnswer: "Confirm Answer",
+        previous: "Previous",
+        next: "Next",
+        restartQuiz: "Restart Quiz",
+        finishQuiz: "Finish Quiz",
+        restartWarning: "Are you sure you want to restart? Your progress will be lost!",
+        finishWarning: "You have {{unanswered}} unanswered question(s). Unanswered questions will be marked as wrong. Finish quiz?",
+        finishMessage: "Quiz finished! Your score: {{score}}/{{total}}"
+    },
+    de: {
+        title: ["Pawlys", "Coolstes", "Quiz"],
+        takeQuiz: "Quiz starten",
+        quizTime: "Quiz-Zeit!",
+        score: "Punkte: {{score}}/{{total}}",
+        questionNumber: "Frage {{current}} von {{total}}",
+        confirmAnswer: "Antwort bestätigen",
+        previous: "Zurück",
+        next: "Weiter",
+        restartQuiz: "Quiz neu starten",
+        finishQuiz: "Quiz beenden",
+        restartWarning: "Bist du sicher, dass du neu starten willst? Dein Fortschritt geht verloren!",
+        finishWarning: "Du hast {{unanswered}} unbeantwortete Frage(n). Unbeantwortete Fragen werden als falsch gewertet. Quiz beenden?",
+        finishMessage: "Quiz beendet! Dein Punktestand: {{score}}/{{total}}"
+    }
+};
 
 const landingEl = document.getElementById("landing");
 const quizContainerEl = document.getElementById("quiz-container");
 const startBtn = document.getElementById("start-btn");
+const langEnBtn = document.getElementById("lang-en");
+const langDeBtn = document.getElementById("lang-de");
 const questionEl = document.getElementById("question");
 const optionsEl = document.getElementById("options");
 const confirmBtn = document.getElementById("confirm-btn");
@@ -20,13 +56,27 @@ const correctSound = document.getElementById("correct-sound");
 const wrongSound = document.getElementById("wrong-sound");
 const backgroundMusic = document.getElementById("background-music");
 
-
 function shuffle(array) {
     for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [array[i], array[j]] = [array[j], array[i]];
     }
     return array;
+}
+
+function updateLanguage() {
+    const t = translations[currentLanguage];
+    document.querySelector(".landing h1").innerHTML = t.title.join("<br>");
+    startBtn.textContent = t.takeQuiz;
+    document.querySelector(".container h1").textContent = t.quizTime;
+    confirmBtn.textContent = t.confirmAnswer;
+    prevBtn.textContent = t.previous;
+    nextBtn.textContent = t.next;
+    restartBtn.textContent = t.restartQuiz;
+    finishBtn.textContent = t.finishQuiz;
+    langEnBtn.classList.toggle("active", currentLanguage === "en");
+    langDeBtn.classList.toggle("active", currentLanguage === "de");
+    updateQuizUI();
 }
 
 function initializeQuiz() {
@@ -39,7 +89,7 @@ function initializeQuiz() {
 
 function loadQuestion() {
     const q = quizData[currentQuestion];
-    questionEl.textContent = q.question;
+    questionEl.textContent = q.question[currentLanguage]; // Use current language for question
     optionsEl.innerHTML = "";
     explanationEl.classList.add("hidden");
     confirmBtn.disabled = !quizState[currentQuestion].selected || quizState[currentQuestion].answered;
@@ -61,12 +111,17 @@ function loadQuestion() {
     });
 
     if (quizState[currentQuestion].answered) {
-        explanationEl.textContent = q.explanation;
+        explanationEl.textContent = q.explanation[currentLanguage]; // Use current language for explanation
         explanationEl.classList.remove("hidden");
     }
 
-    questionNumberEl.textContent = `Question ${currentQuestion + 1} of ${quizData.length}`;
-    scoreEl.textContent = `Score: ${score}/${quizData.length}`;
+    updateQuizUI();
+}
+
+function updateQuizUI() {
+    const t = translations[currentLanguage];
+    scoreEl.textContent = t.score.replace("{{score}}", score).replace("{{total}}", quizData.length);
+    questionNumberEl.textContent = t.questionNumber.replace("{{current}}", currentQuestion + 1).replace("{{total}}", quizData.length);
     prevBtn.disabled = currentQuestion === 0;
     nextBtn.disabled = currentQuestion === quizData.length - 1;
     updateFinishButton();
@@ -85,7 +140,7 @@ confirmBtn.onclick = () => {
     quizState[currentQuestion].answered = true;
     const q = quizData[currentQuestion];
     const correctAnswer = atob(q.answer);
-    explanationEl.textContent = q.explanation;
+    explanationEl.textContent = q.explanation[currentLanguage]; // Update explanation on confirm
     explanationEl.classList.remove("hidden");
 
     if (quizState[currentQuestion].selected === correctAnswer) {
@@ -95,7 +150,7 @@ confirmBtn.onclick = () => {
     } else {
         wrongSound.play();
     }
-    scoreEl.textContent = `Score: ${score}/${quizData.length}`;
+    updateQuizUI();
     confirmBtn.disabled = true;
     loadQuestion();
     updateNavBoxes();
@@ -116,7 +171,7 @@ prevBtn.onclick = () => {
 };
 
 restartBtn.onclick = () => {
-    if (confirm("Are you sure you want to restart? Your progress will be lost!")) {
+    if (confirm(translations[currentLanguage].restartWarning)) {
         initializeQuiz();
     }
 };
@@ -143,9 +198,10 @@ function updateFinishButton() {
 }
 
 finishBtn.onclick = () => {
+    const t = translations[currentLanguage];
     const unanswered = quizState.filter(q => !q.answered).length;
     if (unanswered > 0) {
-        if (confirm(`You have ${unanswered} unanswered question(s). Unanswered questions will be marked as wrong. Finish quiz?`)) {
+        if (confirm(t.finishWarning.replace("{{unanswered}}", unanswered))) {
             quizState.forEach((state, i) => {
                 if (!state.answered) {
                     state.answered = true;
@@ -155,10 +211,10 @@ finishBtn.onclick = () => {
             score = quizState.filter(q => q.correct).length;
             loadQuestion();
             updateNavBoxes();
-            alert(`Quiz finished! Your score: ${score}/${quizData.length}`);
+            alert(t.finishMessage.replace("{{score}}", score).replace("{{total}}", quizData.length));
         }
     } else {
-        alert(`Quiz finished! Your score: ${score}/${quizData.length}`);
+        alert(t.finishMessage.replace("{{score}}", score).replace("{{total}}", quizData.length));
     }
 };
 
@@ -166,9 +222,22 @@ startBtn.onclick = () => {
     landingEl.classList.add("hidden");
     quizContainerEl.classList.remove("hidden");
     initializeQuiz();
-    backgroundMusic.play(); // This should work after click
+    backgroundMusic.play();
 };
 
-// Start with landing page visible
+langEnBtn.onclick = () => {
+    currentLanguage = "en";
+    updateLanguage();
+    if (!quizContainerEl.classList.contains("hidden")) loadQuestion(); // Refresh quiz if active
+};
+
+langDeBtn.onclick = () => {
+    currentLanguage = "de";
+    updateLanguage();
+    if (!quizContainerEl.classList.contains("hidden")) loadQuestion(); // Refresh quiz if active
+};
+
+// Initialize with default language
+updateLanguage();
 landingEl.classList.remove("hidden");
 quizContainerEl.classList.add("hidden");
