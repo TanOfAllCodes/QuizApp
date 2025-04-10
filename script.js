@@ -116,7 +116,9 @@ prevBtn.onclick = () => {
 };
 
 restartBtn.onclick = () => {
-    initializeQuiz();
+    if (confirm("Are you sure you want to restart? Your progress will be lost!")) {
+        initializeQuiz();
+    }
 };
 
 function updateNavBoxes() {
