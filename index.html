@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Quiz App</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Quiz App</h1>
+        <div id="score">Score: 0/10</div>
+        <div id="question-number">Question 1 of 10</div>
+        <div id="question"></div>
+        <div id="options"></div>
+        <button id="confirm-btn" disabled>Confirm Answer</button>
+        <div id="explanation" class="hidden"></div>
+        <div class="navigation">
+            <button id="prev-btn">Previous</button>
+            <button id="next-btn">Next</button>
+        </div>
+        <button id="restart-btn">Restart Quiz</button>
+    </div>
+    <audio id="correct-sound" src="correct.mp3"></audio>
+    <audio id="wrong-sound" src="wrong.mp3"></audio>
+    <script src="qa_config.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
