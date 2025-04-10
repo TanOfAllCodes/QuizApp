@@ -73,10 +73,10 @@ const quizData = [
             de: "Welcher Ozean ist der größte?"
         },
         options: [
-            { en: "Atlantic", de: "Atlantik" },
+            { en: "Atlantic", de: "Atlantik Ozean" },
             { en: "Indian", de: "Indischer Ozean" },
             { en: "Arctic", de: "Arktischer Ozean" },
-            { en: "Pacific", de: "Pazifik" }
+            { en: "Pacific", de: "Pazifik Ozean" }
         ],
         answer: btoa("Pacific"),
         explanation: {
@@ -90,12 +90,12 @@ const quizData = [
             de: "Wer schrieb 'Romeo und Julia'?"
         },
         options: [
-            { en: "Shakespeare", de: "Shakespeare" },
-            { en: "Dickens", de: "Dickens" },
-            { en: "Austen", de: "Austen" },
-            { en: "Hemingway", de: "Hemingway" }
+            { en: "William Shakespeare", de: "William Shakespeare" },
+            { en: "Charles Dickens", de: "Charles Dickens" },
+            { en: "Jane Austen", de: "Jane Austen" },
+            { en: "Ernst Hemingway", de: "Ernst Hemingway" }
         ],
-        answer: btoa("Shakespeare"),
+        answer: btoa("William Shakespeare"),
         explanation: {
             en: "William Shakespeare wrote the famous tragedy 'Romeo and Juliet'.",
             de: "William Shakespeare schrieb die berühmte Tragödie 'Romeo und Julia'."
@@ -103,8 +103,8 @@ const quizData = [
     },
     {
         question: {
-            en: "What gas do plants primarily use?",
-            de: "Welches Gas nutzen Pflanzen hauptsächlich?"
+            en: "What gas do plants primarily use for photosynthesis?",
+            de: "Welches Gas verwenden Pflanzen hauptsächlich für die Photosynthese?"
         },
         options: [
             { en: "Oxygen", de: "Sauerstoff" },
@@ -141,10 +141,10 @@ const quizData = [
             de: "Was ist der Siedepunkt von Wasser in Celsius?"
         },
         options: [
-            { en: "50", de: "50" },
-            { en: "75", de: "75" },
-            { en: "100", de: "100" },
-            { en: "125", de: "125" }
+            { en: "50°C ", de: "50°C " },
+            { en: "75°C ", de: "75°C " },
+            { en: "100°C ", de: "100°C " },
+            { en: "125°C ", de: "125°C " }
         ],
         answer: btoa("100"),
         explanation: {
