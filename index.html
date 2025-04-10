@@ -7,11 +7,18 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="landing" class="landing">
-        <div class="language-selector">
-            <button id="lang-en" class="lang-btn">English</button>
-            <button id="lang-de" class="lang-btn">Deutsch</button>
+    <div id="language-modal" class="modal">
+        <div class="modal-content">
+            <h2>Choose Your Language</h2>
+            <button id="lang-en" class="lang-btn">
+                <img src="https://flagcdn.com/w80/us.png" alt="US Flag"> English
+            </button>
+            <button id="lang-de" class="lang-btn">
+                <img src="https://flagcdn.com/w80/de.png" alt="German Flag"> Deutsch
+            </button>
         </div>
+    </div>
+    <div id="landing" class="landing hidden">
         <h1>
             Pawly's<br>
             Coolest<br>
@@ -20,6 +27,14 @@
         <button id="start-btn">Take Quiz</button>
     </div>
     <div id="quiz-container" class="container hidden">
+        <div class="language-switch">
+            <button id="switch-en" class="lang-btn">
+                <img src="https://flagcdn.com/w40/us.png" alt="US Flag"> EN
+            </button>
+            <button id="switch-de" class="lang-btn">
+                <img src="https://flagcdn.com/w40/de.png" alt="German Flag"> DE
+            </button>
+        </div>
         <h1>Quiz Time!</h1>
         <div id="score">Score: 0/10</div>
         <div id="question-number">Question 1 of 10</div>
@@ -38,7 +53,12 @@
     <audio id="correct-sound" src="right.mp3"></audio>
     <audio id="wrong-sound" src="wrong.mp3"></audio>
     <audio id="background-music" src="music.mp3" loop></audio>
+
+    <footer>Powered by S3-TI (R) 2025</footer>
+    
     <script src="qa_config.js"></script>
     <script src="script.js"></script>
+    
 </body>
+
 </html>
