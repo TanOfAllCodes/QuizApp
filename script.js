@@ -163,8 +163,8 @@ finishBtn.onclick = () => {
 startBtn.onclick = () => {
     landingEl.classList.add("hidden");
     quizContainerEl.classList.remove("hidden");
-    backgroundMusic.play();
     initializeQuiz();
+    backgroundMusic.play(); // This should work after click
 };
 
 // Start with landing page visible
