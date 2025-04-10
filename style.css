@@ -79,6 +79,21 @@ body {
     font-size: 60px;
     line-height: 1.2;
     margin-bottom: 40px;
+    background: linear-gradient(90deg, #ff6680, #ffccd5, #ff6680); /* Gradient for sparkle */
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent; /* Text color comes from gradient */
+    animation: sparkle 2s infinite linear; /* Sparkle animation */
+}
+
+@keyframes sparkle {
+    0% {
+        background-position: 0% 50%;
+    }
+    100% {
+        background-position: 200% 50%;
+    }
 }
 
 #start-btn {
