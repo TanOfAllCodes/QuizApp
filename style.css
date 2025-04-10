@@ -164,9 +164,13 @@ h1 {
 .nav-box {
     width: 25px;
     height: 25px;
-    border: 2px solid #ccc;
+    border: 2px solid rgb(105, 3, 51);
     cursor: pointer;
     background-color: white;
+    font-size: 18px;
+    display: flex; /* Use flexbox for centering */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
 }
 
 .nav-box.answered-correct {

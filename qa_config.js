@@ -4,8 +4,13 @@ const quizData = [
             en: "What is the capital of France?",
             de: "Was ist die Hauptstadt von Frankreich?"
         },
-        options: ["Paris", "London", "Berlin", "Madrid"],
-        answer: btoa("Paris"), // Base64 encoded answer (same for both languages)
+        options: [
+            { en: "Paris", de: "Paris" },
+            { en: "London", de: "London" },
+            { en: "Berlin", de: "Berlin" },
+            { en: "Madrid", de: "Madrid" }
+        ],
+        answer: btoa("Paris"),
         explanation: {
             en: "France's capital is Paris, a major cultural and economic center.",
             de: "Die Hauptstadt Frankreichs ist Paris, ein bedeutendes kulturelles und wirtschaftliches Zentrum."
@@ -16,7 +21,12 @@ const quizData = [
             en: "Which planet is known as the Red Planet?",
             de: "Welcher Planet ist als der Rote Planet bekannt?"
         },
-        options: ["Mars", "Jupiter", "Venus", "Saturn"],
+        options: [
+            { en: "Mars", de: "Mars" },
+            { en: "Jupiter", de: "Jupiter" },
+            { en: "Venus", de: "Venus" },
+            { en: "Saturn", de: "Saturn" }
+        ],
         answer: btoa("Mars"),
         explanation: {
             en: "Mars is called the Red Planet due to its reddish appearance caused by iron oxide (rust) on its surface.",
@@ -28,7 +38,12 @@ const quizData = [
             en: "What is 2 + 2?",
             de: "Was ist 2 + 2?"
         },
-        options: ["3", "4", "5", "6"],
+        options: [
+            { en: "3", de: "3" },
+            { en: "4", de: "4" },
+            { en: "5", de: "5" },
+            { en: "6", de: "6" }
+        ],
         answer: btoa("4"),
         explanation: {
             en: "Basic arithmetic: 2 + 2 equals 4.",
@@ -40,7 +55,12 @@ const quizData = [
             en: "Which element has the symbol H?",
             de: "Welches Element hat das Symbol H?"
         },
-        options: ["Helium", "Hydrogen", "Hafnium", "Hassium"],
+        options: [
+            { en: "Helium", de: "Helium" },
+            { en: "Hydrogen", de: "Wasserstoff" },
+            { en: "Hafnium", de: "Hafnium" },
+            { en: "Hassium", de: "Hassium" }
+        ],
         answer: btoa("Hydrogen"),
         explanation: {
             en: "Hydrogen is the first element in the periodic table with the symbol H.",
@@ -52,7 +72,12 @@ const quizData = [
             en: "What is the largest ocean?",
             de: "Welcher Ozean ist der größte?"
         },
-        options: ["Atlantic", "Indian", "Arctic", "Pacific"],
+        options: [
+            { en: "Atlantic", de: "Atlantik" },
+            { en: "Indian", de: "Indischer Ozean" },
+            { en: "Arctic", de: "Arktischer Ozean" },
+            { en: "Pacific", de: "Pazifik" }
+        ],
         answer: btoa("Pacific"),
         explanation: {
             en: "The Pacific Ocean is the largest, covering more area than all landmasses combined.",
@@ -64,7 +89,12 @@ const quizData = [
             en: "Who wrote 'Romeo and Juliet'?",
             de: "Wer schrieb 'Romeo und Julia'?"
         },
-        options: ["Shakespeare", "Dickens", "Austen", "Hemingway"],
+        options: [
+            { en: "Shakespeare", de: "Shakespeare" },
+            { en: "Dickens", de: "Dickens" },
+            { en: "Austen", de: "Austen" },
+            { en: "Hemingway", de: "Hemingway" }
+        ],
         answer: btoa("Shakespeare"),
         explanation: {
             en: "William Shakespeare wrote the famous tragedy 'Romeo and Juliet'.",
@@ -76,7 +106,12 @@ const quizData = [
             en: "What gas do plants primarily use?",
             de: "Welches Gas nutzen Pflanzen hauptsächlich?"
         },
-        options: ["Oxygen", "Carbon Dioxide", "Nitrogen", "Helium"],
+        options: [
+            { en: "Oxygen", de: "Sauerstoff" },
+            { en: "Carbon Dioxide", de: "Kohlendioxid" },
+            { en: "Nitrogen", de: "Stickstoff" },
+            { en: "Helium", de: "Helium" }
+        ],
         answer: btoa("Carbon Dioxide"),
         explanation: {
             en: "Plants use carbon dioxide during photosynthesis to produce energy.",
@@ -88,7 +123,12 @@ const quizData = [
             en: "Which animal is known as man’s best friend?",
             de: "Welches Tier ist als bester Freund des Menschen bekannt?"
         },
-        options: ["Cat", "Dog", "Horse", "Bird"],
+        options: [
+            { en: "Cat", de: "Katze" },
+            { en: "Dog", de: "Hund" },
+            { en: "Horse", de: "Pferd" },
+            { en: "Bird", de: "Vogel" }
+        ],
         answer: btoa("Dog"),
         explanation: {
             en: "Dogs are often called man’s best friend due to their loyalty and companionship.",
@@ -100,7 +140,12 @@ const quizData = [
             en: "What is the boiling point of water in Celsius?",
             de: "Was ist der Siedepunkt von Wasser in Celsius?"
         },
-        options: ["50", "75", "100", "125"],
+        options: [
+            { en: "50", de: "50" },
+            { en: "75", de: "75" },
+            { en: "100", de: "100" },
+            { en: "125", de: "125" }
+        ],
         answer: btoa("100"),
         explanation: {
             en: "Water boils at 100°C under standard atmospheric pressure.",
@@ -112,7 +157,12 @@ const quizData = [
             en: "Which color is not in a rainbow?",
             de: "Welche Farbe ist nicht in einem Regenbogen?"
         },
-        options: ["Red", "Blue", "Pink", "Yellow"],
+        options: [
+            { en: "Red", de: "Rot" },
+            { en: "Blue", de: "Blau" },
+            { en: "Pink", de: "Pink" },
+            { en: "Yellow", de: "Gelb" }
+        ],
         answer: btoa("Pink"),
         explanation: {
             en: "A rainbow consists of seven colors (ROYGBIV), and pink is not one of them.",

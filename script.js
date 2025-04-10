@@ -90,12 +90,16 @@ function updateLanguage() {
 }
 
 function initializeQuiz() {
-    quizState = quizData.map((q) => ({
-        answered: false,
-        selected: null,
-        correct: false,
-        shuffledOptions: shuffle([...q.options]) // Shuffle options once at quiz start
-    }));
+    quizState = quizData.map((q) => {
+        const indices = q.options.map((_, index) => index); // Array of indices [0, 1, 2, 3]
+        return {
+            answered: false,
+            selected: null,
+            correct: false,
+            originalIndices: indices,
+            shuffledIndices: shuffle([...indices]) // Shuffle indices, not options
+        };
+    });
     score = 0;
     currentQuestion = 0;
     loadQuestion();
@@ -107,32 +111,38 @@ function loadQuestion() {
     const state = quizState[currentQuestion];
     questionEl.textContent = q.question[currentLanguage];
     optionsEl.innerHTML = "";
-    explanationEl.classList.add("explanation-hidden"); // Use new class for hiding
+    explanationEl.classList.add("explanation-hidden");
 
-    const options = state.shuffledOptions;
-    options.forEach(option => {
+    // Map shuffled indices to options in the current language
+    const currentOptions = state.shuffledIndices.map(index => ({
+        text: q.options[index][currentLanguage], // Get the text in the current language
+        original: q.options[index] // Store the full option object
+    }));
+
+    currentOptions.forEach(option => {
         const div = document.createElement("div");
         div.classList.add("option");
-        div.textContent = option;
+        div.textContent = option.text; // Display the text in the current language
         if (state.answered) {
             const correctAnswer = atob(q.answer);
-            if (option === correctAnswer) div.classList.add("correct");
-            if (option === state.selected && option !== correctAnswer) div.classList.add("wrong");
-        } else if (option === state.selected) {
+            if (option.text === correctAnswer) div.classList.add("correct");
+            if (state.selected && option.text === state.selected[currentLanguage] && option.text !== correctAnswer) {
+                div.classList.add("wrong");
+            }
+        } else if (state.selected && option.text === state.selected[currentLanguage]) {
             div.classList.add("selected");
         }
-        div.onclick = () => selectOption(div, option);
+        div.onclick = () => selectOption(div, option.original);
         optionsEl.appendChild(div);
     });
 
     if (state.answered) {
         explanationEl.textContent = q.explanation[currentLanguage];
-        explanationEl.classList.remove("explanation-hidden"); // Show explanation
+        explanationEl.classList.remove("explanation-hidden");
     }
 
     updateQuizUI();
 }
-
 
 function updateQuizUI() {
     const t = translations[currentLanguage];
@@ -145,7 +155,7 @@ function updateQuizUI() {
 
 function selectOption(element, option) {
     if (quizState[currentQuestion].answered) return;
-    quizState[currentQuestion].selected = option;
+    quizState[currentQuestion].selected = option; // Store the full option object
     document.querySelectorAll(".option").forEach(opt => opt.classList.remove("selected"));
     element.classList.add("selected");
     confirmBtn.disabled = false;
@@ -157,9 +167,9 @@ confirmBtn.onclick = () => {
     const q = quizData[currentQuestion];
     const correctAnswer = atob(q.answer);
     explanationEl.textContent = q.explanation[currentLanguage];
-    explanationEl.classList.remove("explanation-hidden"); // Show explanation
+    explanationEl.classList.remove("explanation-hidden");
 
-    if (quizState[currentQuestion].selected === correctAnswer) {
+    if (quizState[currentQuestion].selected[currentLanguage] === correctAnswer) {
         score++;
         quizState[currentQuestion].correct = true;
         correctSound.play();
@@ -197,6 +207,7 @@ function updateNavBoxes() {
     quizData.forEach((_, i) => {
         const box = document.createElement("div");
         box.classList.add("nav-box");
+        box.textContent = (i + 1).toString(); // Add question number (1, 2, 3, ...)
         if (quizState[i].answered) {
             box.classList.add(quizState[i].correct ? "answered-correct" : "answered-wrong");
         }
@@ -277,7 +288,6 @@ switchDeBtn.onclick = () => {
     loadQuestion();
 };
 
-// Start with modal visible, others hidden
 modalEl.classList.remove("hidden");
 landingEl.classList.add("hidden");
 quizContainerEl.classList.add("hidden");
