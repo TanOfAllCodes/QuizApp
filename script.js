@@ -39,7 +39,7 @@ const translations = {
     }
 };
 
-// --- DOM Element References (Keep as is) ---
+// --- DOM Element References ---
 const modalEl = document.getElementById("language-modal");
 const modalTitleEl = document.getElementById("modal-title");
 const landingEl = document.getElementById("landing");
@@ -54,6 +54,7 @@ const quizTitleEl = document.getElementById("quiz-title");
 const questionEl = document.getElementById("question");
 const optionsEl = document.getElementById("options");
 const confirmBtn = document.getElementById("confirm-btn");
+const resultsBtn = document.getElementById("results-btn");
 const explanationEl = document.getElementById("explanation");
 const scoreEl = document.getElementById("score");
 const questionNumberEl = document.getElementById("question-number");
@@ -62,6 +63,7 @@ const nextBtn = document.getElementById("next-btn");
 const restartBtn = document.getElementById("restart-btn");
 const finishBtn = document.getElementById("finish-btn");
 const questionNavEl = document.getElementById("question-nav");
+const languageSwitchEl = document.getElementById("language-switch");
 const correctSound = document.getElementById("correct-sound");
 const wrongSound = document.getElementById("wrong-sound");
 const backgroundMusic = document.getElementById("background-music");
@@ -70,97 +72,80 @@ const backgroundMusic = document.getElementById("background-music");
 // Fisher-Yates (Knuth) Shuffle algorithm
 function shuffle(array) {
     let currentIndex = array.length, randomIndex;
-    // While there remain elements to shuffle.
     while (currentIndex !== 0) {
-        // Pick a remaining element.
         randomIndex = Math.floor(Math.random() * currentIndex);
         currentIndex--;
-        // And swap it with the current element.
         [array[currentIndex], array[randomIndex]] = [
             array[randomIndex], array[currentIndex]];
     }
     return array;
 }
 
-
 function updateLanguage() {
     const t = translations[currentLanguage];
-    modalTitleEl.textContent = t.chooseLanguage;
+    // modalTitleEl.textContent = t.chooseLanguage;
     landingTitleEl.innerHTML = t.title.join("<br>");
     startBtn.textContent = t.takeQuiz;
     quizTitleEl.textContent = t.quizTime;
-    confirmBtn.textContent = t.confirmAnswer; // Keep Confirm text consistent
+    confirmBtn.textContent = t.confirmAnswer;
     prevBtn.textContent = t.previous;
     nextBtn.textContent = t.next;
     restartBtn.textContent = t.restartQuiz;
     finishBtn.textContent = t.finishQuiz;
     switchEnBtn.classList.toggle("active", currentLanguage === "en");
     switchDeBtn.classList.toggle("active", currentLanguage === "de");
-    // Update UI elements that depend on language if quiz is active
-    if (!quizContainerEl.classList.contains("hidden")) {
-        updateQuizUI(); // Update score/question number text
-        loadQuestion(); // Reload question to show options in new language
+    if (!quizContainerEl.classList.contains("quiz-container-hidden")) {
+        updateQuizUI();
+        loadQuestion();
     }
 }
 
 function initializeQuiz() {
-    // Create initial state for each question
     quizState = quizData.map((q, questionIndex) => {
-        // Create an array of original indices [0, 1, 2, ...]
         const originalIndices = q.options.map((_, index) => index);
-        // Shuffle these indices to determine the display order
         const shuffledDisplayIndices = shuffle([...originalIndices]);
-
         return {
-            questionIndex: questionIndex, // Store original question index if needed
+            questionIndex: questionIndex,
             answered: false,
-            selectedOriginalIndex: null, // Store the *original* index of the selected option
+            selectedOriginalIndex: null,
             correct: false,
-            // Store the shuffled order of original indices for consistent display
             shuffledDisplayIndices: shuffledDisplayIndices
         };
     });
     score = 0;
-    currentQuestion = 0; // Start at the first question
-    confirmBtn.disabled = true; // Disable confirm initially
+    currentQuestion = 0;
+    confirmBtn.disabled = true;
     loadQuestion();
     updateNavBoxes();
-    updateQuizUI(); // Initial UI update
+    updateQuizUI();
 }
 
-
 function loadQuestion() {
-    const q = quizData[currentQuestion]; // Get the question data from qa_config.js
-    const state = quizState[currentQuestion]; // Get the current state for this question
-    questionEl.textContent = q.question[currentLanguage]; // Set question text
-    optionsEl.innerHTML = ""; // Clear previous options
-    explanationEl.classList.add("explanation-hidden"); // Hide explanation initially
-    explanationEl.textContent = ""; // Clear explanation text
+    const q = quizData[currentQuestion];
+    const state = quizState[currentQuestion];
+    questionEl.textContent = q.question[currentLanguage];
+    optionsEl.innerHTML = "";
+    explanationEl.classList.add("explanation-hidden");
+    explanationEl.textContent = "";
 
-    // Use the pre-shuffled order stored in the state to display options
     state.shuffledDisplayIndices.forEach(originalIndex => {
-        const optionData = q.options[originalIndex]; // Get the option data using the original index
+        const optionData = q.options[originalIndex];
         const div = document.createElement("div");
         div.classList.add("option");
-        div.textContent = optionData[currentLanguage]; // Display text in the current language
-        div.dataset.originalIndex = originalIndex; // Store the original index on the element
+        div.textContent = optionData[currentLanguage];
+        div.dataset.originalIndex = originalIndex;
 
-        // Add styling based on the question's state
         if (state.answered) {
-            // If answered, show correct/wrong feedback
-            if (originalIndex === 0) { // Index 0 is always correct
+            if (originalIndex === 0) {
                 div.classList.add("correct");
             } else if (state.selectedOriginalIndex === originalIndex) {
-                // If this wrong option was selected
                 div.classList.add("wrong");
             }
-            div.style.pointerEvents = 'none'; // Disable clicking after answer
+            div.style.pointerEvents = 'none';
         } else if (state.selectedOriginalIndex === originalIndex) {
-            // If not answered, but this option is selected
             div.classList.add("selected");
         }
 
-        // Add click listener only if the question hasn't been answered
         if (!state.answered) {
             div.onclick = () => selectOption(div, originalIndex);
         }
@@ -168,28 +153,35 @@ function loadQuestion() {
         optionsEl.appendChild(div);
     });
 
-    // Show explanation if the question has been answered
     if (state.answered) {
         explanationEl.textContent = q.explanation[currentLanguage];
         explanationEl.classList.remove("explanation-hidden");
-        confirmBtn.disabled = true; // Keep confirm disabled after answering
+        confirmBtn.disabled = true;
     } else {
-        // Re-enable/disable confirm button based on whether an option is selected
         confirmBtn.disabled = state.selectedOriginalIndex === null;
     }
 
-    updateQuizUI(); // Update score, question number, nav buttons
+    updateQuizUI();
 }
 
-
 function updateQuizUI() {
-    if (!currentLanguage) return; // Don't update if language not set
+    if (!currentLanguage) return;
     const t = translations[currentLanguage];
     scoreEl.textContent = t.score.replace("{{score}}", score).replace("{{total}}", quizData.length);
     questionNumberEl.textContent = t.questionNumber.replace("{{current}}", currentQuestion + 1).replace("{{total}}", quizData.length);
-    prevBtn.disabled = currentQuestion === 0;
-    nextBtn.disabled = currentQuestion === quizData.length - 1;
-    updateFinishButton(); // Update finish button state/highlight
+    
+    // Handle navigation button visibility
+    prevBtn.classList.toggle("prev-btn-hidden", currentQuestion === 0);
+    nextBtn.classList.toggle("next-btn-hidden", currentQuestion === quizData.length - 1);
+    
+    // Check if quiz is completed
+    const quizCompleted = quizState.every(q => q.answered);
+    
+    // Toggle Confirm/Results buttons
+    confirmBtn.classList.toggle("confirm-btn-hidden", quizCompleted);
+    resultsBtn.classList.toggle("results-btn-hidden", !quizCompleted);
+    
+    updateFinishButton();
     // Highlight current question in nav
     document.querySelectorAll('.nav-box').forEach((box, index) => {
         box.classList.toggle('current', index === currentQuestion);
@@ -198,46 +190,42 @@ function updateQuizUI() {
 
 function selectOption(element, originalIndex) {
     const state = quizState[currentQuestion];
-    if (state.answered) return; // Do nothing if already answered
+    if (state.answered) return;
 
-    state.selectedOriginalIndex = originalIndex; // Store the original index of the selection
+    state.selectedOriginalIndex = originalIndex;
 
-    // Update visual selection
     document.querySelectorAll(".option").forEach(opt => opt.classList.remove("selected"));
     element.classList.add("selected");
 
-    confirmBtn.disabled = false; // Enable the confirm button
+    confirmBtn.disabled = false;
 }
 
 confirmBtn.onclick = () => {
     const state = quizState[currentQuestion];
-    // Only proceed if an option is selected and not already answered
     if (state.selectedOriginalIndex === null || state.answered) return;
 
-    state.answered = true; // Mark as answered
+    state.answered = true;
     const q = quizData[currentQuestion];
 
-    // Check correctness by comparing the selected original index with 0
     if (state.selectedOriginalIndex === 0) {
         score++;
         state.correct = true;
         correctSound.play();
     } else {
-        state.correct = false; // Ensure correct is false if wrong
+        state.correct = false;
         wrongSound.play();
     }
 
-    confirmBtn.disabled = true; // Disable confirm button after answering
-    loadQuestion(); // Reload question to show feedback (correct/wrong styles, explanation)
-    updateNavBoxes(); // Update navigation box colors
-    updateQuizUI(); // Update score display
+    confirmBtn.disabled = true;
+    loadQuestion();
+    updateNavBoxes();
+    updateQuizUI();
 };
-
 
 nextBtn.onclick = () => {
     if (currentQuestion < quizData.length - 1) {
         currentQuestion++;
-        confirmBtn.disabled = true; // Disable confirm when moving to a new question
+        confirmBtn.disabled = true;
         loadQuestion();
     }
 };
@@ -245,33 +233,31 @@ nextBtn.onclick = () => {
 prevBtn.onclick = () => {
     if (currentQuestion > 0) {
         currentQuestion--;
-        confirmBtn.disabled = true; // Disable confirm when moving to a new question
+        confirmBtn.disabled = true;
         loadQuestion();
     }
 };
 
 restartBtn.onclick = () => {
     if (confirm(translations[currentLanguage].restartWarning)) {
-        // Reset state and UI
         quizState = [];
         score = 0;
         currentQuestion = 0;
-        landingEl.classList.add("hidden");
-        quizContainerEl.classList.remove("hidden");
-        document.getElementById("language-switch").classList.remove("hidden");
-        initializeQuiz(); // Re-initialize the quiz state and load first question
+        landingEl.classList.add("landing-hidden");
+        quizContainerEl.classList.remove("quiz-container-hidden");
+        languageSwitchEl.classList.remove("language-switch-hidden");
+        initializeQuiz();
     }
 };
 
 function updateNavBoxes() {
-    questionNavEl.innerHTML = ""; // Clear existing boxes
+    questionNavEl.innerHTML = "";
     quizData.forEach((_, i) => {
         const box = document.createElement("div");
         box.classList.add("nav-box");
-        box.textContent = (i + 1).toString(); // Display question number (1-based)
-        box.classList.toggle('current', i === currentQuestion); // Highlight current
+        box.textContent = (i + 1).toString();
+        box.classList.toggle('current', i === currentQuestion);
 
-        // Add answered status classes if the question state exists
         if (quizState[i]) {
             if (quizState[i].answered) {
                 box.classList.add(quizState[i].correct ? "answered-correct" : "answered-wrong");
@@ -280,17 +266,14 @@ function updateNavBoxes() {
 
         box.onclick = () => {
             currentQuestion = i;
-            loadQuestion(); // Load the clicked question
+            loadQuestion();
         };
         questionNavEl.appendChild(box);
     });
 }
 
-
 function updateFinishButton() {
     const unanswered = quizState.filter(q => !q.answered).length;
-    // Highlight if only 1 question is left, or maybe always if unanswered > 0?
-    // Let's highlight whenever there are unanswered questions.
     finishBtn.classList.toggle("highlighted", unanswered > 0);
 }
 
@@ -304,94 +287,83 @@ finishBtn.onclick = () => {
     }
 
     if (proceed) {
-        // Mark all remaining unanswered questions as answered and incorrect
         quizState.forEach((state) => {
             if (!state.answered) {
                 state.answered = true;
-                state.correct = false; // Mark unanswered as wrong
-                // Optionally set selectedOriginalIndex to something invalid like -1
-                // state.selectedOriginalIndex = -1;
+                state.correct = false;
             }
         });
-        // Recalculate score just in case (though it should be correct)
         score = quizState.filter(q => q.correct).length;
 
-        // Update UI to reflect final state
-        loadQuestion(); // Reload current q view to show final state if it was unanswered
-        updateNavBoxes(); // Update nav boxes for all questions
-        updateQuizUI(); // Update score display
+        loadQuestion();
+        updateNavBoxes();
+        updateQuizUI();
 
-        // Show final message
         alert(t.finishMessage.replace("{{score}}", score).replace("{{total}}", quizData.length));
 
-        // Optionally disable quiz controls further or navigate away
         confirmBtn.disabled = true;
-        nextBtn.disabled = true;
-        prevBtn.disabled = true;
         optionsEl.querySelectorAll('.option').forEach(opt => opt.style.pointerEvents = 'none');
     }
 };
 
+resultsBtn.onclick = () => {
+    const t = translations[currentLanguage];
+    alert(t.finishMessage.replace("{{score}}", score).replace("{{total}}", quizData.length));
+};
 
 startBtn.onclick = () => {
-    landingEl.classList.add("hidden");
-    quizContainerEl.classList.remove("hidden");
-    document.getElementById("language-switch").classList.remove("hidden");
+    landingEl.classList.add("landing-hidden");
+    quizContainerEl.classList.remove("quiz-container-hidden");
+    languageSwitchEl.classList.remove("language-switch-hidden");
     initializeQuiz();
     startMusic();
 };
 
 function startMusic() {
-    // Attempt to play music only if not already started and user interaction occurred
     if (!musicStarted && backgroundMusic.paused) {
-         backgroundMusic.play().then(() => {
+        backgroundMusic.play().then(() => {
             musicStarted = true;
         }).catch(error => {
             console.log("Background music playback failed:", error);
-            // Autoplay might be blocked, user might need to interact more
         });
     }
 }
-
 
 // --- Language Selection Handlers ---
 langEnBtn.onclick = () => {
     currentLanguage = "en";
     updateLanguage();
-    modalEl.classList.add("hidden");
-    landingEl.classList.remove("hidden");
-    // Don't start quiz here, wait for "Take Quiz" button
-    startMusic(); // Try starting music on language selection
+    modalEl.classList.add("modal-hidden");
+    landingEl.classList.remove("landing-hidden");
+    startMusic();
 };
 
 langDeBtn.onclick = () => {
     currentLanguage = "de";
     updateLanguage();
-    modalEl.classList.add("hidden");
-    landingEl.classList.remove("hidden");
-    // Don't start quiz here, wait for "Take Quiz" button
-    startMusic(); // Try starting music on language selection
+    modalEl.classList.add("modal-hidden");
+    landingEl.classList.remove("landing-hidden");
+    startMusic();
 };
 
 switchEnBtn.onclick = () => {
     if (currentLanguage !== "en") {
         currentLanguage = "en";
-        updateLanguage(); // This will reload the question with the new language
+        updateLanguage();
     }
 };
 
 switchDeBtn.onclick = () => {
-     if (currentLanguage !== "de") {
+    if (currentLanguage !== "de") {
         currentLanguage = "de";
-        updateLanguage(); // This will reload the question with the new language
+        updateLanguage();
     }
 };
 // --- End Language Selection Handlers ---
 
-
 // --- Initial Page Setup ---
-modalEl.classList.remove("hidden"); // Show language modal first
-landingEl.classList.add("hidden");
-quizContainerEl.classList.add("hidden");
-document.getElementById("language-switch").classList.add("hidden");
+modalEl.classList.remove("modal-hidden");
+landingEl.classList.add("landing-hidden");
+quizContainerEl.classList.add("quiz-container-hidden");
+languageSwitchEl.classList.add("language-switch-hidden");
 // --- End Initial Page Setup ---
