@@ -1,18 +1,18 @@
 const quizData = [
     {
         question: {
-            en: "What is the capital of France?",
-            de: "Was ist die Hauptstadt von Frankreich?"
+            en: "Please choose the correct statement!",
+            de: "Bitte wählen Sie die passendste Aussage aus!"
         },
         options: [
-            { en: "Paris", de: "Paris" },
-            { en: "London", de: "London" },
-            { en: "Berlin", de: "Berlin" },
-            { en: "Madrid", de: "Madrid" }
+            { en: "a", de: "A" },
+            { en: "b", de: "B" },
+            { en: "c", de: "C" },
+            { en: "d", de: "D" }
         ],
         explanation: {
-            en: "France's capital is Paris, a major cultural and economic center.",
-            de: "Die Hauptstadt Frankreichs ist Paris, ein bedeutendes kulturelles und wirtschaftliches Zentrum."
+            en: " --- ",
+            de: " --- "
         }
     },
     {
