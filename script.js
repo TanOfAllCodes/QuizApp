@@ -2,7 +2,6 @@ let currentQuestion = 0;
 let score = 0;
 let quizState = [];
 let currentLanguage = null;
-let musicStarted = false;
 
 const translations = {
     en: {
@@ -64,9 +63,7 @@ const restartBtn = document.getElementById("restart-btn");
 const finishBtn = document.getElementById("finish-btn");
 const questionNavEl = document.getElementById("question-nav");
 const languageSwitchEl = document.getElementById("language-switch");
-const correctSound = document.getElementById("correct-sound");
 const wrongSound = document.getElementById("wrong-sound");
-const backgroundMusic = document.getElementById("background-music");
 // --- End DOM Element References ---
 
 // Fisher-Yates (Knuth) Shuffle algorithm
@@ -210,7 +207,6 @@ confirmBtn.onclick = () => {
     if (state.selectedOriginalIndex === 0) {
         score++;
         state.correct = true;
-        correctSound.play();
     } else {
         state.correct = false;
         wrongSound.play();
@@ -316,18 +312,10 @@ startBtn.onclick = () => {
     quizContainerEl.classList.remove("quiz-container-hidden");
     languageSwitchEl.classList.remove("language-switch-hidden");
     initializeQuiz();
-    startMusic();
+
 };
 
-function startMusic() {
-    if (!musicStarted && backgroundMusic.paused) {
-        backgroundMusic.play().then(() => {
-            musicStarted = true;
-        }).catch(error => {
-            console.log("Background music playback failed:", error);
-        });
-    }
-}
+
 
 // --- Language Selection Handlers ---
 langEnBtn.onclick = () => {
@@ -335,7 +323,6 @@ langEnBtn.onclick = () => {
     updateLanguage();
     modalEl.classList.add("modal-hidden");
     landingEl.classList.remove("landing-hidden");
-    startMusic();
 };
 
 langDeBtn.onclick = () => {
@@ -343,7 +330,6 @@ langDeBtn.onclick = () => {
     updateLanguage();
     modalEl.classList.add("modal-hidden");
     landingEl.classList.remove("landing-hidden");
-    startMusic();
 };
 
 switchEnBtn.onclick = () => {
