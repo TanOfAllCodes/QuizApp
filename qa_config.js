@@ -149,7 +149,7 @@ const quizData = [
             de: "Welche Farbe ist nicht in einem Regenbogen?"
         },
         options: [
-            { en: "Pink", de: "Pink" },
+            { en: "Pink", de: "Rosa" },
             { en: "Red", de: "Rot" },
             { en: "Blue", de: "Blau" },
             { en: "Yellow", de: "Gelb" }
