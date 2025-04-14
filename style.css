@@ -240,8 +240,19 @@ body {
 }
 
 .nav-box.current {
-    border: 3px solid rgb(105, 3, 51); /* Thicker border for active question */
-    background-color: white; /* Explicitly white, no color change */
+    border-width: 3px; /* Thicker border for active question */
+}
+
+.nav-box.current.answered-correct {
+    background-color: #d4edda; /* Keep green for correct */
+    border-color: #28a745;
+    border-width: 3px; /* Thicker border */
+}
+
+.nav-box.current.answered-wrong {
+    background-color: #f8d7da; /* Keep red for incorrect */
+    border-color: #dc3545;
+    border-width: 3px; /* Thicker border */
 }
 
 #options {
