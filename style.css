@@ -137,10 +137,10 @@ body {
     position: relative;
     width: 525px;
     min-height: 338px;
-    max-height: calc(95vh - 30px); /* Reserve space for footer (20px height + 10px spacing) */
+    max-height: calc(97.5vh - 30px); /* Reserve space for footer (20px height + 10px spacing) */
     padding: 23px;
     box-sizing: border-box;
-    overflow-y: auto;
+    /* overflow-y: auto; */
 }
 
 .container h1 {
