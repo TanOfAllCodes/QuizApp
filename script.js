@@ -6,7 +6,7 @@ let currentLanguage = null;
 const translations = {
     en: {
         chooseLanguage: "Choose Your Language",
-        title: ["Pawly's", "Coolest", "Quiz"],
+        title: ["Mööp", "Quiz"],
         takeQuiz: "Take Quiz",
         quizTime: "Quiz Time!",
         score: "Score: {{score}}/{{total}}",
@@ -22,7 +22,7 @@ const translations = {
     },
     de: {
         chooseLanguage: "Wähle deine Sprache",
-        title: ["Pawlys", "Coolstes", "Quiz"],
+        title: ["Mööp", "Quiz"],
         takeQuiz: "Quiz starten",
         quizTime: "Quiz-Zeit!",
         score: "Punkte: {{score}}/{{total}}",
