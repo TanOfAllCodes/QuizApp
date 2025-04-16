@@ -4,6 +4,10 @@ A simple quiz application designed to help educators understand how children lea
 
 [Click here to try the QuizApp!](https://tanofallcodes.github.io/QuizApp/)
 
+## License
+
+This project is an original project created by @TanOfAllCodes and is licensed with the terms under [LICENSE](LICENSE.md)
+
 ## Overview
 
 QuizApp is a child-friendly quiz platform with a clean, neutral, and light-colored aesthetic. It supports English and German, offers 10 questions with randomized answer options, and provides immediate feedback with explanations. Users can navigate freely, view results, and restart or end the quiz at any time.
