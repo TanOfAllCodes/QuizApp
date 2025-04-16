@@ -49,11 +49,11 @@ After answering, immediate feedback is provided:
 The quiz ends when all questions are answered or if the user chooses to end early:
 - **View Results**: When the quiz ends, the "Confirm Answer" button is replaced with a "View Results" button, displaying the user's points.
 
-<img width="600" alt="Image 9 - View Results Screen" src="https://github.com/user-attachments/assets/4d184bbf-a5b1-4ba0-ac48-c62aeae92c8a" />
+<img width="600" alt="Image 9 - View Results Screen" src="https://github.com/user-attachments/assets/2c06f259-e4af-46d3-b372-19c7fe95edd8" />
 
 - **End Quiz**: Users can click "End Quiz" to stop early, with unanswered questions marked incorrect.
 
-<img width="600" alt="Image 10 - End Quiz Option" src="https://github.com/user-attachments/assets/2c06f259-e4af-46d3-b372-19c7fe95edd8" />
+<img width="600" alt="Image 10 - End Quiz Option" src="https://github.com/user-attachments/assets/4d184bbf-a5b1-4ba0-ac48-c62aeae92c8a" />
 
 - **Restart Quiz**: Users can restart the quiz, resetting all progress.
 
