@@ -6,7 +6,7 @@ A simple quiz application designed to help educators understand how children lea
 
 ## License
 
-This project is an original project created by @TanOfAllCodes and is licensed with the terms under [LICENSE](LICENSE.md)
+This project is an original project created by [@TanOfAllCodes](https://github.com/TanOfAllCodes) and is licensed with the terms under [LICENSE](LICENSE.md)
 
 ## Overview
 
