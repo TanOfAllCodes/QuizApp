@@ -28,13 +28,18 @@ The quiz consists of 10 questions, each with four answer options displayed in ra
 <img width="600" alt="Image 3 - First Question (No Previous Button)" src="https://github.com/user-attachments/assets/76167ea9-aae4-49da-9074-f7c18986ade7" />
 <img width="600" alt="Image 4 - Last Question (No Next Button)" src="https://github.com/user-attachments/assets/bd2178b4-232f-4bb7-909c-f147ee1ff171" />
 
-- **Navigation**: Users can navigate freely using "Next" and "Previous" buttons or the top "Question Navigation" boxes. The current question is highlighted with a thick border, colored green (correct) or red (incorrect) if answered.
+- **Navigation**: Users can navigate questions freely using "Next" and "Previous" buttons or the top "Question Navigation" boxes. The current question is highlighted with a thick border, colored green (correct) or red (incorrect) if answered.
 
 <img width="600" alt="Image 5 - Question Navigation" src="https://github.com/user-attachments/assets/5d54f6ae-9cf6-410f-a844-df30b300125e" />
 
 - **Answer Confirmation**: The "Confirm Answer" button is clickable only when an answer is selected on an unanswered question.
 
-<img width="600" alt="Image 6 - Confirm Answer Button" src="https://github.com/user-attachments/assets/33ebbad0-810e-442c-85ff-a9148bb94ce4" />
+<img width="600" alt="Image 6 - Answer Explanation" src="https://github.com/user-attachments/assets/7be183c9-0e55-450e-9e63-0408a8d4ef84" />
+<img width="600" alt="Image 7 - Confirm Answer Button" src="https://github.com/user-attachments/assets/33ebbad0-810e-442c-85ff-a9148bb94ce4" />
+
+- **Restart Quiz**: Users can restart the quiz, resetting all progress.
+
+<img width="600" alt="Image 8 - Restart Quiz Alert" src="https://github.com/user-attachments/assets/2c06f259-e4af-46d3-b372-19c7fe95edd8" />
 
 ### Question Feedback
 After answering, immediate feedback is provided:
@@ -42,23 +47,25 @@ After answering, immediate feedback is provided:
 - Incorrect answers mark the selected option in red and highlight the correct answer in green.
 - All questions include an explanation for the answer.
 
-<img width="600" alt="Image 7 - Correct and Incorrect Feedback" src="https://github.com/user-attachments/assets/92c7e504-5d6a-4798-9a3b-340b90f64300" />
-<img width="600" alt="Image 8 - Answer Explanation" src="https://github.com/user-attachments/assets/7be183c9-0e55-450e-9e63-0408a8d4ef84" />
+<img width="600" alt="Image 9 - Correct and Incorrect Feedback" src="https://github.com/user-attachments/assets/92c7e504-5d6a-4798-9a3b-340b90f64300" />
+
 
 ### Ending the Quiz
 The quiz ends when all questions are answered or if the user chooses to end early:
-- **View Results**: When the quiz ends, the "Confirm Answer" button is replaced with a "View Results" button, displaying the user's points.
-
-<img width="600" alt="Image 9 - View Results Screen" src="https://github.com/user-attachments/assets/2c06f259-e4af-46d3-b372-19c7fe95edd8" />
 
 - **End Quiz**: Users can click "End Quiz" to stop early, with unanswered questions marked incorrect.
+  
+<img width="600" alt="Image 10 - End Quiz Option"  src="https://github.com/user-attachments/assets/ceac4967-71c4-4d26-b201-393dcd9a5b35" />
 
-<img width="600" alt="Image 10 - End Quiz Option" src="https://github.com/user-attachments/assets/4d184bbf-a5b1-4ba0-ac48-c62aeae92c8a" />
+- **Quiz Completion and View Results**: The questions and answers can be navigated once the quiz is complete. When the quiz ends, the "Confirm Answer" button is replaced with a "View Results" button, displaying the user's points as an alert when clicked.
 
-- **Restart Quiz**: Users can restart the quiz, resetting all progress.
+<img width="600" alt="Image 11 - Quiz Completion" src="https://github.com/user-attachments/assets/29a11c7b-72bc-4b65-aef7-8082650b04b0" />
+<img width="600"  alt="Image 12 - View Results Alert" src="https://github.com/user-attachments/assets/4d184bbf-a5b1-4ba0-ac48-c62aeae92c8a" />
 
-<img width="600" alt="Image 11 - Restart Quiz Option" src="https://github.com/user-attachments/assets/ceac4967-71c4-4d26-b201-393dcd9a5b35" />
 
-- **Quiz Completion**: The final screen confirms the quiz is complete.
 
-<img width="600" alt="Image 12 - Quiz Completion Screen" src="https://github.com/user-attachments/assets/29a11c7b-72bc-4b65-aef7-8082650b04b0" />
+
+
+
+
+
